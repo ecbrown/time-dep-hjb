@@ -108,7 +108,7 @@ void ExplicitLattice2D<_F,_G,_TGrad,_TBC>::advance(double dt)
     const vector2i* pos = bc_->boundary_pos();
     const double*   bv  = bc_->boundary_val(ts_+dt);
 #ifdef USE_OPENMP
-    #pragma omp parallel for default(none) shared(bv, pos)
+    #pragma omp parallel for default(none) firstprivate(BN) shared(bv, pos)
 #endif
     for(int i = 0;i < BN;++ i)
     {
@@ -117,7 +117,7 @@ void ExplicitLattice2D<_F,_G,_TGrad,_TBC>::advance(double dt)
     }
 
 #ifdef USE_OPENMP
-    #pragma omp parallel for default(none) shared(dt)
+    #pragma omp parallel for default(none) shared(dt, lastUId)
 #endif
     for(int iy = 0;iy <= RES_.y;++ iy)
     for(int ix = 0;ix <= RES_.x;++ ix)
